@@ -12,11 +12,11 @@
 li.fade-in { opacity: 1;  transition: 1s; }
 li.fade-out { opacity: 0;  transition: 1s; }
 
-.cardA li {margin-left: -40px; padding: 8px; font-size: 0.75em; width: 480px; min-height: 120px; text-align: left; border-style: solid; border-width: 1px; border-color: #ffffff; 
+.cardA li {margin-left: -40px; padding: 10px; font-size: 0.75em; width: 440px; min-height: 120px; text-align: left; border-style: solid; border-width: 1px; border-color: #ffffff; 
 background-color: white; list-style: none;)
 }
 
-.box { display: inline-block; background-color: rgba(250,250,250,0.9); border-style: solid; border-width: 1px; border-color: #cccccc; margin: 4px; min-width: 484px; padding-top: 8px;}
+.box { display: inline-block; background-color: rgba(250,250,250,0.9); border-style: solid; border-width: 1px; border-color: #cccccc; margin: 4px; width: 444px; padding-top: 8px;}
 /*
 
 img.embedImg {border: 1px solid #000000; position: absolute; margin: 4px; display: inline;}
@@ -38,7 +38,7 @@ img.embedImg {border: 1px solid #000000; position: absolute; margin: 4px; displa
         <a class="nav-link" href="projects.html">Projects</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="about.html">About</a>
+        <a class="nav-link" href="about.html">About</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="terms.html">Terms</a>
@@ -49,19 +49,18 @@ img.embedImg {border: 1px solid #000000; position: absolute; margin: 4px; displa
 </nav>
  
  <div style="text-align: center">
-	     <div class="navbar-brand active">Prospect Joinery</div>
-		 <div>Handyman (Reading, Berkshire)</div>
+	     <div class="navbar-brand active">Prospect Joinery &amp; Handyman</div>
+		 <div>Reading, Berkshire</div>
 		 <br/>
 </div>
 
-  <div class="container">
-   <div class="row">
-    <div class="col-1"></div>
-    <div class="col-10" style="text-align: full;">
-     <p>Please enter your credentials to log into the portal</p>
-    </div>
-    <div class="col-1"></div>
-   </div>
+  <div style="flex-wrap: wrap; justify-content: center; display:flex;">
+  
+	<div class="box" style="text-align: center;">
+		<p style="text-align: center;"><img src="https://cdn1.iconfinder.com/data/icons/iconoir-vol-3/24/message-text-64.png"/><br/><strong>"Portal Log in"</strong>
+		<ol class="cardA" id="form">
+			<li>	
+     <p>Please enter your portal credentials...</p>
    <div class="row">
     <div class="col-1"></div>
     <div class="col-2" style="text-align: full;">
@@ -70,19 +69,20 @@ img.embedImg {border: 1px solid #000000; position: absolute; margin: 4px; displa
     </div>
     <div class="col-3" style="text-align: full;">
 	<p><input id="un" type="text" /></p>
-	<p><input type="password" /></p>
+	<p><input id="pw" type="password" /></p>
 	<button class="btn btn-outline-primary" onclick="submit()";>Log in</button>
     </div>
-    <div class="col-1"></div>
-   </div>
    <div class="row" >
     <div class="col-1"></div>
-    <div class="col-10" style="text-align: full;">
+    <div class="col-2" style="text-align: full;">
 	<br/><p id="ms" style="color: red; display: none;">Unable to log in, please check username and password</p>
     </div>
-    <div class="col-1"></div>
-   </div>
+  </li>
+  </ol>
   </div>
-  <script>document.getElementById("un").focus();function submit(){document.getElementById("ms").style.display="block";}</script>
+  </div>
+  <script>document.getElementById("un").focus();function submit(){
+  document.getElementById("ms").style.display="block";}
+  </script>
 </body>
 </html>
