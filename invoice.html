@@ -108,12 +108,14 @@ function check(node)
 			rn.style.display="block";
 		}
 		
+		var cn = document.getElementById("cn").value;
+		cn = cn.replace(/[^0-9a-z]/gi, '');		
 		var text = el.innerText;
 		text = text.replace("[date]", new Date().toLocaleDateString());
 		text = text.replace("[estimate/invoice]", type=="estimate" ? "Estimate" : "Invoice");
 		text = text.replace("[estimate/invoice]", type=="estimate" ? 
 		"This estimate is valid for 30 days." 
-		: "Work is complete and payment is now due for this invoice.\nThank you for your business.");
+		: "Work is complete and payment is now due for this invoice.\nThank you for your business.\n\nFor BACS transfer please use:\nName: Richard Stockdale\nSort: 60-01-08 Account: 77545788\nReference: "+cn);
 		document.getElementById("output").innerText = text;	
 		var encoded_body = encodeURIComponent(text);
 		var encoded_subject = encodeURIComponent("Prospect Joinery Invoice");
