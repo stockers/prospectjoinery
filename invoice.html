@@ -48,13 +48,15 @@ function check(node)
 
 }
 	function insertSpans(node, tag){
-	    var inps = node.getElementsByTagName(tag);
+	    var inps = node.getElementsByTagName(tag);		
 		var invalid = false;
 		for(let i = 0;i < inps.length; i++)	{		
 			var spn=document.createElement("span");			
 			var node = inps[i];
 			if(node.value=="")
 				invalid = true;
+			else
+				node.style.display = "none";
 			node.style.border=(node.value=="") ? "1px inset red" : "1px inset #dddddd"; 		
 			spn.textContent = node.value;
 			node.parentNode.insertBefore(spn,node);
@@ -66,8 +68,10 @@ function check(node)
 	    var inps = node.getElementsByTagName(tag);
 		for(let i = 0;i < inps.length; i++)	{
 			var r = inps[i].previousSibling;
-			if(r.innerText != "")
+			if(r.innerText != "") {
 				inps[i].previousSibling.remove();
+				inps[i].style.display = "inline-block";
+			}
 		}
 	}
 
@@ -80,7 +84,10 @@ function check(node)
 		node.previousSibling.remove();
 	}
 	
-		function makeEmail(type) {
+	function daysIntoYear(date){
+ 	   return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
+	}
+	function makeEmail(type) {
 		//check(document.getElementById("form"));
 		// hours x rate = labcost, totalcost = labcost+matcost
 		var hours = document.getElementById("hours").value *1;
@@ -110,13 +117,14 @@ function check(node)
 		
 		var cn = document.getElementById("cn").value;
 		cn = cn.replace(/[^0-9a-z]/gi, '');		
-		var text = el.innerText;
+		var text = el.innerHTML; // innerHTML was innerText;
 		text = text.replace("[date]", new Date().toLocaleDateString());
-		text = text.replace("[estimate/invoice]", type=="estimate" ? "Estimate" : "Invoice");
+		text = text.replace("[estimate/invoice]", type=="estimate" ? "Estimate" : "Invoice 01" + daysIntoYear(new Date()));
 		text = text.replace("[estimate/invoice]", type=="estimate" ? 
 		"This estimate is valid for 30 days." 
-		: "Work is complete and payment is now due for this invoice.\nThank you for your business.\n\nFor BACS transfer please use:\nName: Richard Stockdale\nSort: 60-01-08 Account: 77545788\nReference: "+cn);
-		document.getElementById("output").innerText = text;	
+		: "Work is complete and payment is now due for this invoice, thank you for your custom.\n<br/><br/>For BACS transfer please use:\n<br/>Name: Richard Stockdale\n<br/>Sort: 60-01-08<br/>Account: 77545788\n<br/>Reference: "+cn);
+		
+		document.getElementById("output").innerHTML = text;	
 		var encoded_body = encodeURIComponent(text);
 		var encoded_subject = encodeURIComponent("Prospect Joinery Invoice");
 		var from = "prospectjoinery@outlook.com";
@@ -181,23 +189,38 @@ function check(node)
 	<div class="box" style="text-align: center;">
 		<p style="text-align: center;"><img src="https://cdn1.iconfinder.com/data/icons/iconoir-vol-3/24/message-text-64.png"/><br/><strong>"Template Estimate/Invoice"</strong>
 		<ol class="cardA" id="form">
-			<li>			
-<br/>Prospect Joinery and Handyman (Reading, Berkshire)
-<br/>240 Tilehurst Rd
-<br/>Reading
-<br/>Berkshire
-<br/>RG30 2NE
-<br/>0774 952 3466
-<br/>
-<br/>Date: [date]
-<br/>
-<br/>[estimate/invoice] for client:
+			<li>
+				<table style="border-style: solid; border-width: 1px; width: 404px;"><tr><td style="padding:10px">
+
+				<table width=100%>
+					<tr>
+					<td><img src="https://prospectjoinery.com/pj180.png" width="100px"/></td>	
+					<td><p style="text-align: right">
+	<br/><strong>Prospect Joinery &amp; Handyman (Reading, Berkshire)</strong>
+	<br/>240 Tilehurst Rd
+	<br/>Reading
+	<br/>Berkshire
+	<br/>RG30 2NE
+	<br/>0774 952 3466
+	<br/>
+	<br/>Date: [date]
+	<br/>
+	</p>
+						
+						</td>	
+					</tr>
+				</table>
+
+
+<br/><strong>[estimate/invoice] for client:</strong>
 <br/><input id="cn" placeholder="[Client Name]" />
 <br/><input id="ca1" placeholder="[Client Flat/House Street]" />
 <br/><input id="ca2" placeholder="[Client Town]" />
 <br/><input id="pc" placeholder="[Client Postcode]" />
+<br/><input id="ctc" placeholder="[Client Telephone]" />
+<br/><input id="cem" placeholder="[Client Email]" />
 <br/>
-<br/>Project Description:
+<br/><strong>Project Description:</strong>
 <br/><textarea cols="60" placeholder="[Insert Project Description]" ></textarea>
 <br/>
 <br/>• Materials:
@@ -207,26 +230,28 @@ function check(node)
 <br/>• Labour:
 <br/><input id="hours" size=7 placeholder="[Hours]"/>  x £ <input id="rate" size=7 value="15.00"/> = £ <input disabled id="labcost" size=7 placeholder="[will calc]"/>
 <br/>				
-<br/>Total Charges: £<input disabled id="total" placeholder="[will calc]" />
-<br/>
-<br/>
-<br/>For payment terms, please see https://prospectjoinery.com/terms.html
+<p style="text-align: right;">
+<br/><strong>Total Charges: £<input disabled id="total" placeholder="[will calc]" /></strong>
+</p>
+For payment terms, please see https://prospectjoinery.com/terms.html
 <br/>[estimate/invoice]
 <br/>
 <br/>Regards,
-<br/>Richard Stockdale				
+<br/>Richard Stockdale
+
+</td></tr></table>	
 			</li>
 		</ol>
 		<ol class="cardA" id="render" style="display:none;">
 			<li>
-			<pre id="output">-</pre>
+			<div id="output">-</div> <!-- div was a pre-->
 			<a id="email" href="" class="btn btn-primary">email</a>
 			</li>
 		</ol>
 		<button onClick="showTemplate();" class="btn btn-primary">template</button>
 		<button onClick="makeEmail('estimate');" class="btn btn-primary">estimate</button>
 		<button onClick="makeEmail('invoice');" class="btn btn-primary">invoice</button>		
-		</p>
+		<button onClick="makeEmail('pretty');" class="btn btn-primary">pretty</button>		
 	</div>
 
 	
